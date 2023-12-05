@@ -48,9 +48,19 @@ METRICS_IMAGE   := $(BASE_IMAGE_NAME)/$(SERVICE_NAME)-metrics:$(VERSION)
 
 all: service
 
+all-aexp: service-aexp
+
 service:
 	docker build \
 		-f zarf/docker/dockerfile.service \
+		-t $(SERVICE_IMAGE) \
+		--build-arg BUILD_REF=$(VERSION) \
+		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		.
+
+service-aexp:
+	docker build \
+		-f zarf/docker/dockerfile.aexp \
 		-t $(SERVICE_IMAGE) \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -90,6 +100,10 @@ dev-restart:
 dev-update: all dev-load dev-restart
 
 dev-update-apply: all dev-load dev-apply
+
+dev-update-aexp: all-aexp dev-load dev-restart
+
+dev-update-apply-aexp: all-aexp dev-load dev-apply
 
 dev-logs:
 	kubectl logs --namespace=$(NAMESPACE) -l app=$(APP) --all-containers=true -f --tail=100 --max-log-requests=6 | go run app/tooling/logfmt/main.go -service=$(SERVICE_NAME)
