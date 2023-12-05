@@ -18,6 +18,9 @@ install:
 	go install golang.org/dl/go1.21.4@latest
 	go1.21.4 download
 
+curl:
+	curl -il http://localhost:3000/test
+
 # ==============================================================================
 # Define dependencies
 
