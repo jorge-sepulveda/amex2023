@@ -8,6 +8,12 @@ run:
 run-21:
 	go1.21.4 run app/services/sales-api/main.go | go1.21.4 run app/tooling/logfmt/main.go
 
+run-help:
+	go run app/services/sales-api/main.go --help
+
+run-help-21:
+	go1.21.4 run app/services/sales-api/main.go --help
+
 install:
 	go install golang.org/dl/go1.21.4@latest
 	go1.21.4 download
@@ -98,3 +104,10 @@ dev-describe-deployment:
 
 dev-describe-sales:
 	kubectl describe pod --namespace=$(NAMESPACE) -l app=$(APP)
+
+# ==============================================================================
+# Modules support
+
+tidy:
+	go mod tidy
+	go mod vendor
