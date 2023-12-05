@@ -1,12 +1,12 @@
 package v1
 
 import (
-	"encoding/json"
 	"net/http"
 	"os"
 
+	"github.com/ardanlabs/service/app/services/sales-api/v1/handlers/testgrp"
 	"github.com/ardanlabs/service/foundation/logger"
-	"github.com/dimfeld/httptreemux/v5"
+	"github.com/ardanlabs/service/foundation/web"
 )
 
 // APIMuxConfig contains all the mandatory systems required by handlers.
@@ -16,19 +16,10 @@ type APIMuxConfig struct {
 	Log      *logger.Logger
 }
 
-func APIMux(cfg APIMuxConfig) *httptreemux.ContextMux {
-	mux := httptreemux.NewContextMux()
+func APIMux(cfg APIMuxConfig) *web.App {
+	app := web.NewApp(cfg.Shutdown)
 
-	h := func(w http.ResponseWriter, r *http.Request) {
-		status := struct {
-			Status string
-		}{
-			Status: "OK",
-		}
-		json.NewEncoder(w).Encode(status)
-	}
+	app.Handle(http.MethodGet, "/test", testgrp.Test)
 
-	mux.Handle(http.MethodGet, "/test", h)
-
-	return mux
+	return app
 }
