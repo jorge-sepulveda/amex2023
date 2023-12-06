@@ -131,7 +131,7 @@ func GenToken() error {
 	}
 
 	fmt.Println("Signature Valid")
-	fmt.Printf("%#v", claims2)
+	fmt.Printf("%#v\n", claims2)
 
 	// =========================================================================
 
@@ -149,7 +149,7 @@ func GenToken() error {
 	}
 
 	input := map[string]any{
-		"Key":   b.Bytes(),
+		"Key":   b.String(),
 		"Token": str,
 		"ISS":   "service project",
 	}
@@ -165,7 +165,7 @@ func GenToken() error {
 
 	result, ok := results[0].Bindings["x"].(bool)
 	if !ok || !result {
-		return fmt.Errorf("bindings results[%v] ok[%v]", results, ok)
+		return fmt.Errorf("ERROR bindings results[%v] ok[%v]", results, ok)
 	}
 
 	fmt.Println("REGO Signature Valid")
