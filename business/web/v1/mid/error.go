@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/ardanlabs/service/business/web/v1/trusted"
+	v1 "github.com/ardanlabs/service/business/web/v1"
 	"github.com/ardanlabs/service/foundation/logger"
 	"github.com/ardanlabs/service/foundation/web"
 )
@@ -15,20 +15,20 @@ func Error(log *logger.Logger) web.Middleware {
 			if err := handler(ctx, w, r); err != nil {
 				log.Error(ctx, "message", "msg", err)
 
-				var er trusted.ErrorDocument
+				var er v1.ErrorResponse
 				var status int
 
 				switch {
-				case trusted.IsError(err):
-					trsErr := trusted.GetError(err)
+				case v1.IsTrustedError(err):
+					trsErr := v1.GetTrustedError(err)
 
-					er = trusted.ErrorDocument{
+					er = v1.ErrorResponse{
 						Error: trsErr.Error(),
 					}
 					status = trsErr.Status
 
 				default:
-					er = trusted.ErrorDocument{
+					er = v1.ErrorResponse{
 						Error: http.StatusText(http.StatusInternalServerError),
 					}
 					status = http.StatusInternalServerError

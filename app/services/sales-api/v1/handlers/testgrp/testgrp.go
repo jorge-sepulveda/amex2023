@@ -6,13 +6,13 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/ardanlabs/service/business/web/v1/trusted"
+	v1 "github.com/ardanlabs/service/business/web/v1"
 	"github.com/ardanlabs/service/foundation/web"
 )
 
 func Test(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	if n := rand.Intn(100); n%2 == 0 {
-		return trusted.NewError(errors.New("TRUSTED ERROR"), http.StatusBadRequest)
+		return v1.NewTrustedError(errors.New("TRUSTED ERROR"), http.StatusBadRequest)
 	}
 
 	status := struct {
