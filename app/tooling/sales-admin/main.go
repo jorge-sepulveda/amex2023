@@ -173,23 +173,21 @@ func GenToken() error {
 	return nil
 }
 
+// https://play.openpolicyagent.org/p/as4xmZ4uKm
+
 var opaAuthentication = `package ardan.rego
 
 default auth = false
 
-auth {
-	jwt_valid
-}
-
-jwt_valid := valid {
-	[valid, header, payload] := verify_jwt
+auth := valid {
+	[valid, _, _] := verify_jwt
 }
 
 verify_jwt := io.jwt.decode_verify(input.Token, {
-        "cert": input.Key,
-        "iss": input.ISS,
-	}
-)`
+    "cert": input.Key,
+       "iss": input.ISS,
+})
+`
 
 // GenKey creates an x509 private/public key for auth tokens.
 func GenKey() error {
