@@ -45,6 +45,11 @@ curl-auth:
 load:
 	hey -m GET -c 100 -n 1000 http://localhost:3000/test
 
+live:
+	curl -il http://localhost:3000/liveness
+
+ready:
+	curl -il http://localhost:3000/readiness
 
 # ==============================================================================
 # Define dependencies
