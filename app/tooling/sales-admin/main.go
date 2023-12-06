@@ -173,7 +173,7 @@ func GenToken() error {
 	return nil
 }
 
-// https://play.openpolicyagent.org/p/as4xmZ4uKm
+// https://play.openpolicyagent.org/p/so0MOdh7j1
 
 var opaAuthentication = `package ardan.rego
 
