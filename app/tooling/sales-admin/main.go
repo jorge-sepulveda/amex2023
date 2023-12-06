@@ -177,15 +177,19 @@ func GenToken() error {
 
 var opaAuthentication = `package ardan.rego
 
-default auth = false
+import future.keywords.if
+import future.keywords.in
 
-auth := valid {
+default auth := false
+
+auth if {
 	[valid, _, _] := verify_jwt
+	valid = true
 }
 
 verify_jwt := io.jwt.decode_verify(input.Token, {
-    "cert": input.Key,
-       "iss": input.ISS,
+	"cert": input.Key,
+	"iss": input.ISS,
 })
 `
 
