@@ -3,45 +3,45 @@ package ardan.rego
 import future.keywords.if
 import future.keywords.in
 
-default ruleAny := false
+default rule_any := false
 
-default ruleAdminOnly := false
+default rule_admin_only := false
 
-default ruleUserOnly := false
+default rule_user_only := false
 
-default ruleAdminOrSubject := false
+default rule_admin_or_subject := false
 
-roleUser := "USER"
+role_user := "USER"
 
-roleAdmin := "ADMIN"
+role_admin := "ADMIN"
 
-roleAll := {roleAdmin, roleUser}
+role_all := {role_admin, role_user}
 
-ruleAny if {
+rule_any if {
 	claim_roles := {role | some role in input.Roles}
-	input_roles := roleAll & claim_roles
+	input_roles := role_all & claim_roles
 	count(input_roles) > 0
 }
 
-ruleAdminOnly if {
+rule_admin_only if {
 	claim_roles := {role | some role in input.Roles}
-	input_admin := {roleAdmin} & claim_roles
+	input_admin := {role_admin} & claim_roles
 	count(input_admin) > 0
 }
 
-ruleUserOnly if {
+rule_user_only if {
 	claim_roles := {role | some role in input.Roles}
-	input_user := {roleUser} & claim_roles
+	input_user := {role_user} & claim_roles
 	count(input_user) > 0
 }
 
-ruleAdminOrSubject if {
+rule_admin_or_subject if {
 	claim_roles := {role | some role in input.Roles}
-	input_admin := {roleAdmin} & claim_roles
+	input_admin := {role_admin} & claim_roles
 	count(input_admin) > 0
 } else if {
 	claim_roles := {role | some role in input.Roles}
-	input_user := {roleUser} & claim_roles
+	input_user := {role_user} & claim_roles
 	count(input_user) > 0
 	input.UserID == input.Subject
 }
