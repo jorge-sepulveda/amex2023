@@ -2,6 +2,18 @@
 SHELL_PATH = /bin/ash
 SHELL = $(if $(wildcard $(SHELL_PATH)),/bin/ash,/bin/bash)
 
+# ==============================================================================
+# CLASS NOTES
+#
+# Kind
+# 	For full Kind v0.20 release notes: https://github.com/kubernetes-sigs/kind/releases/tag/v0.20.0
+#
+# RSA Keys
+# 	To generate a private/public key PEM file.
+# 	$ openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048
+# 	$ openssl rsa -pubout -in private.pem -out public.pem
+# 	$ ./sales-admin genkey
+
 run:
 	go run app/services/sales-api/main.go | go run app/tooling/logfmt/main.go
 
