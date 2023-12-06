@@ -14,6 +14,12 @@ SHELL = $(if $(wildcard $(SHELL_PATH)),/bin/ash,/bin/bash)
 # 	$ openssl rsa -pubout -in private.pem -out public.pem
 # 	$ ./sales-admin genkey
 
+admin:
+	go run app/tooling/sales-admin/main.go
+
+admin-21:
+	go1.21.4 run app/tooling/sales-admin/main.go
+
 run:
 	go run app/services/sales-api/main.go | go run app/tooling/logfmt/main.go
 
