@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -97,6 +98,32 @@ func GenToken() error {
 	if err := pem.Encode(os.Stdout, &publicBlock); err != nil {
 		return fmt.Errorf("encoding to public file: %w", err)
 	}
+
+	// =========================================================================
+
+	fmt.Println("=======================================================")
+
+	var claims2 struct {
+		jwt.RegisteredClaims
+		Roles []string
+	}
+
+	f := func(t *jwt.Token) (interface{}, error) {
+		return &pk.PublicKey, nil
+	}
+
+	tok, err := jwt.ParseWithClaims(str, &claims2, f)
+	if err != nil {
+		return err
+	}
+
+	if !tok.Valid {
+		fmt.Println("Signature Not Valid")
+		return errors.New("NOT VALIDAT")
+	}
+
+	fmt.Println("Signature Valid")
+	fmt.Printf("%#v", claims2)
 
 	return nil
 }
